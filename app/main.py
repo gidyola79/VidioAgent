@@ -22,16 +22,16 @@ app.add_middleware(
 )
 
 
-@app.middleware("http")
-async def add_security_headers(request: Request, call_next):
-    resp = await call_next(request)
+#@app.middleware("http")
+#async def add_security_headers(request: Request, call_next):
+    #resp = await call_next(request)
     # Basic security headers
-    resp.headers.setdefault("X-Frame-Options", "DENY")
-    resp.headers.setdefault("X-Content-Type-Options", "nosniff")
-    resp.headers.setdefault("Referrer-Policy", "no-referrer")
-    resp.headers.setdefault("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload")
-    resp.headers.setdefault("Permissions-Policy", "geolocation=(), microphone=()")
-    return resp
+    #resp.headers.setdefault("X-Frame-Options", "DENY")
+    #resp.headers.setdefault("X-Content-Type-Options", "nosniff")
+    #resp.headers.setdefault("Referrer-Policy", "no-referrer")
+    #resp.headers.setdefault("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload")
+    #resp.headers.setdefault("Permissions-Policy", "geolocation=(), microphone=()")
+    #return resp
 
 
 @app.on_event("startup")
