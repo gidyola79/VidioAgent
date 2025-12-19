@@ -21,7 +21,7 @@ def generate_and_send_video(
 ):
 
 # SSL support (important if using Upstash / Railway Redis TLS)
-if settings.CELERY_BROKER_URL.startswith("rediss://"):
+    if settings.CELERY_BROKER_URL.startswith("rediss://"):
     celery_app.conf.broker_use_ssl = {"ssl_cert_reqs": "required"}
     celery_app.conf.redis_backend_use_ssl = {"ssl_cert_reqs": "required"}
 
