@@ -4,11 +4,14 @@ from sqlalchemy.orm import Session
 from app.core.config import settings
 from app.db.base import get_db
 from app.db.models import Business, Customer, Conversation
-from app.workers.celery_app import generate_and_send_video
 from app.services.twilio_service import send_whatsapp_message
 
 router = APIRouter()
 
+def trigger_task(...):
+    from app.celery_app import generate_and_send_video
+    generate_and_send_video.delay(...)
+    
 def get_or_create_customer(phone_number: str, business_id: int, db: Session) -> Customer:
     """Get existing customer or create new one"""
     customer = db.query(Customer).filter(
