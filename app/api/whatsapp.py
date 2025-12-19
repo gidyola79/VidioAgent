@@ -3,7 +3,7 @@ from typing import Annotated
 from sqlalchemy.orm import Session
 from app.core.config import settings
 from app.db.base import get_db
-from app.celery.app import generate_and_send_video
+from app.workers.celery_app import generate_and_send_video
 from app.db.models import Business, Customer, Conversation
 from app.services.twilio_service import send_whatsapp_message
 
