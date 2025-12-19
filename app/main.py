@@ -53,16 +53,16 @@ async def health():
     return {"status": "ok"}
 
 
-@app.get('/ready')
-async def ready():
+#@app.get('/ready')
+#async def ready():
     # Basic readiness check: DB connectivity
-    try:
-        from app.db.base import engine
-        with engine.connect() as conn:
-            conn.execute("SELECT 1")
-    except Exception:
-        raise RuntimeError("db-unavailable")
-    return {"status": "ready"}
+   # try:
+       # from app.db.base import engine
+       # with engine.connect() as conn:
+           # conn.execute("SELECT 1")
+   # except Exception:
+       # raise RuntimeError("db-unavailable")
+    #return {"status": "ready"}
 
 
 app.include_router(whatsapp.router, prefix="/whatsapp", tags=["whatsapp"])
