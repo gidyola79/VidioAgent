@@ -1,116 +1,183 @@
 # VidioAgent
-
-VidioAgent is an AI-powered service that receives WhatsApp messages for registered businesses, generates a personalized spoken response and lip-synced video, and sends it back to the customer.
-
+‎### AI Customer Relations Video Agent for Small Businesses
+‎
 This repository contains a FastAPI backend, Celery worker, and a Next.js frontend.
 
-## Quick start (development)
+‎VidioAgent is an AI-powered customer relations assistant that helps small and local businesses create **personalized video messages** for customer engagement using simple text inputs and a short reference video.
+‎VidioAgent is an AI-powered service that receives WhatsApp messages for registered businesses, generates a personalized spoken response and lip-synced video, and sends it back to the customer.
 
+‎It automates communication, improves response time, and enables businesses to build stronger relationships with customers across platforms like WhatsApp and Instagram.
+‎
+‎---
+‎
+‎## 🚀 Problem
+‎
+‎Small and medium-sized businesses rely heavily on messaging platforms to communicate with customers, but they face:
+‎
+‎- Slow or delayed responses to customer inquiries  
+‎- Inconsistent promotions and engagement  
+‎- Lack of skills/tools to create video content  
+‎- Limited time to manage customer relationships  
+‎
+‎This results in **lost sales, weak engagement, and poor customer retention**.
+‎
+‎---
+‎
+‎## 💡 Solution
+‎
+‎VidioAgent acts as an **AI Customer Relations Agent** that:
+‎
+‎- Converts text into personalized video messages  
+‎- Responds to customer queries automatically  
+‎- Generates promotional and announcement videos  
+‎- Maintains consistent communication  
+‎- Works across messaging and social platforms  
+‎
+‎---
+‎
+‎## 🤖 Key Features
+‎
+‎- 🎬 **Text-to-Video Generation**  
+‎  Turn simple text into engaging video messages
+‎
+‎- 🧑‍💼 **Owner Video Personalization**  
+‎  Use a short reference video to generate videos in the business owner's voice/style
+‎
+‎- 💬 **Automated Customer Replies**  
+‎  AI-generated video responses to customer questions
+‎
+‎- 📱 **Multi-Platform Sharing**  
+‎  WhatsApp, Instagram, and social media ready
+‎
+‎- 📊 **CRM Dashboard (Planned)**  
+‎  Track customers, messages, and engagement
+‎
+‎- 🌍 **Multi-language Support (Planned)**  
+‎  Including local languages and Pidgin
+‎
+‎---
+‎
+‎## 🧠 How It Works
+‎
+‎1. Business uploads a short video of themselves  
+‎2. Inputs text or receives a customer message  
+‎3. AI generates:
+‎   - Script  
+‎   - Voice  
+‎   - Video  
+‎4. Video is sent to customers or posted online  
+‎5. System tracks engagement and improves over time  
+‎
+‎---
+‎
+‎## 🏗️ Architecture Overview
+‎
+‎Frontend → FastAPI Backend → Celery Workers → Redis Queue → AI Services → Delivery Channels
+‎
+‎### Core Components:
+‎- **FastAPI** – Backend API  
+‎- **Celery** – Background task processing  
+‎- **Redis** – Task queue & job state  
+‎- **PostgreSQL** – Database (users, customers, jobs)  
+‎- **AI Models/APIs** – Text, voice, and video generation  
+‎
+‎---
+‎## Quick start (development)
 Prerequisites:
 - Python 3.11 (recommended)
 - Node.js & npm
-- Docker (optional, recommended for Redis)
-
-1. Copy `.env.example` to `.env` and fill in the required API keys and settings.
-
+- Docker (optional, recommended for redis)
+‎## ⚙️ Tech Stack
+‎
+‎| Layer | Technology |
+‎|------|-----------|
+‎| Backend | FastAPI (Python) |
+‎| Task Queue | Celery |
+‎| Broker | Redis (Upstash / Redis Cloud) |
+‎| Database | PostgreSQL |
+‎| Frontend | React (planned) |
+‎| Deployment | Render / Railway |
+‎| AI | LLM APIs, TTS, Video generation |
+‎
+‎---
+‎
+‎## 📦 Project Structure
+‎vidioagent/ │ ├── app/ │   ├── main.py │   ├── celery_app.py │   ├── tasks.py │   ├── models/ │   ├── services/ │ ├── requirements.txt ├── .env (not committed) ├── README.md
+‎
+‎---
+‎
+‎## 🔧 Setup Instructions
+‎
+‎### 1. Clone the repository
+‎```bash
+‎git clone https://github.com/gidyola79/vidioagent.git
+‎cd vidioagent
+‎2. Create virtual environment
+‎Bash
+‎python -m venv venv
+‎source venv/bin/activate   # Linux/Mac
+‎venv\Scripts\activate      # Windows
+‎3. Install dependencies
+‎Bash
+‎pip install -r requirements.txt
+‎4. Set environment variables
+‎Create a .env file:
+‎Copy `.env.example` to `.env` and fill in the required API keys and settings.
+ 
+‎REDIS_URL=your_redis_url
+‎DATABASE_URL=your_database_url
+‎OPENAI_API_KEY=your_api_key
+...etc
+‎
+‎5. Run FastAPI server
+‎Bash
+‎uvicorn app.main:app --reload
+‎6. Run Celery worker
+‎Bash
+‎celery -A app.celery_app.celery_app worker --loglevel=info
+‎🌐 Deployment
+‎Backend: Render / Railway
+‎Redis: Upstash / Redis Cloud
+‎Database: Render PostgreSQL / Supabase
+‎
 Password policy: business owner accounts require a password with a minimum of 8 characters. Use a mix of uppercase, lowercase, numbers, and symbols for stronger protection.
 
-2. (Optional) Start Redis with Docker for Celery:
-```powershell
-docker run -d -p 6379:6379 --name redis redis:7
-```
-
-3. Create and activate a Python virtual environment (use Python 3.11):
-```powershell
-cd C:\Users\HP\PROJECTS
-py -3.11 -m venv .venv
-& .\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-```
-
-4. Initialize the database (dev - SQLite) or run migrations:
-```powershell
-# Option A: quick create tables (dev)
-python -c "from app.db.base import Base, engine; Base.metadata.create_all(bind=engine)"
-
-# Option B: use alembic migrations if you prefer
-alembic upgrade head
-```
-
-5. Start the backend API:
-```powershell
-python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-```
-
-Alternatively, you can start the backend in a separate PowerShell window from the repo root:
-```powershell
-cd C:\Users\HP\PROJECTS
-& .\.venv\Scripts\Activate.ps1
-python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-```
-
-6. Start a Celery worker (in a separate terminal with the venv activated):
-```powershell
-# If celery is on PATH
-celery -A app.workers.celery_app.celery_app worker --loglevel=info
-
-# Or via python module
-python -m celery -A app.workers.celery_app.celery_app worker --loglevel=info
-```
-
-7. Start the frontend (in the `frontend/` folder):
-```powershell
-cd frontend
-npm install
-npm run dev
-```
-
-Tip: Start the frontend in its own terminal so you can watch the Next.js logs while developing.
-
-8. For Twilio webhooks during local dev, use `ngrok` to expose your local backend and set the Twilio webhook URL to `https://<ngrok-id>.ngrok.io/whatsapp/webhook`.
-
-## Important environment variables
-See `.env.example` for a full list. Minimum keys for E2E:
-- `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_WHATSAPP_NUMBER`
-- `ELEVENLABS_API_KEY`
-- `REPLICATE_API_TOKEN`
-- `GROQ_API_KEY` (or other LLM provider key)
-- `CELERY_BROKER_URL` and `CELERY_RESULT_BACKEND` (Redis recommended)
-
-## Production notes
-- Use managed Postgres for `DATABASE_URL`.
-- Use S3 or another cloud object store for media (replace `app/services/storage.py`).
-- Deploy Celery workers on a worker pool (separate processes/hosts).
-- Replace local `BASE_URL` with your production backend URL so media links are absolute.
-- Ensure Twilio WhatsApp sender is approved for production use (Twilio sandbox vs Business API differences).
-
-## Next recommended changes
-- Use Python 3.11 to avoid binary wheel compatibility issues (e.g., `pydantic-core`).
-- Clone voice sample during registration and store the ElevenLabs voice ID so generated audio uses the owner's voice.
-- Add automated tests and a GitHub Actions workflow for CI.
-
-## Contact / Support
-If you want, I can:
-- Recreate the venv here with Python 3.11 and reinstall deps.
-- Wire voice cloning into business registration.
-- Add a `README` section for deploying to Render / Vercel / Fly.
-
-## Docker & Deployment
-
-You can run a local development stack using Docker Compose (includes Redis, backend and frontend services):
-
-```powershell
-docker-compose up --build
-```
-
-Deployment checklist:
-
-- Ensure `.env` is populated with real secrets (do **not** use `change-me` as `SECRET_KEY`).
-- Run Alembic migrations before starting the service in production: `alembic upgrade head` (a migration to add `password_hash` is included).
-- Use managed services for Redis and a production database (Postgres) in production environments.
-- Configure HTTPS at the edge (load balancer) and set `BASE_URL` to your production backend URL.
-- Rotate API keys and store them in a secure vault rather than checked-in `.env` for production.
-- Run multiple Celery worker processes (and autoscale) for background tasks.
-- Consider using a process manager (systemd / supervisord) or container orchestrator (Kubernetes) for reliability.
-
+‎🎥 Demo
+‎(https://)
+‎Example flow:
+‎Upload short video
+‎Enter text
+‎Generate video
+‎Send to WhatsApp
+‎
+‎📈 Impact
+‎VidioAgent helps:
+‎Increase customer engagement
+‎Improve response time
+‎Build trust and loyalty
+‎Enable small businesses to compete digitally.
+‎
+‎🔐 Security & Ethics
+‎User consent required for video/voice usage
+‎No storage of sensitive customer data without encryption
+‎Designed to prevent misuse of generated content
+‎🚀 Future Improvements
+‎Full CRM dashboard
+‎WhatsApp automation integration
+‎Multi-language support (Yoruba, Igbo, Hausa, Pidgin)
+‎Analytics & recommendation engine
+‎Mobile app version
+‎
+‎🤝 Contributing
+‎Contributions are welcome!
+‎Feel free to fork the repo and submit a pull request.
+‎
+‎📄 License
+‎This project is licensed under the MIT License.
+‎
+‎🙌 Acknowledgements
+‎Built as part of an AI Hackathon focused on improving customer relations for local businesses.
+‎
+‎👤 Author
+‎Olamide Gideon
+‎GitHub: https://github.com/gidyola79
